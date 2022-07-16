@@ -1,58 +1,50 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
-
+//import styled from 'styled-components';
+import { GoSearch } from 'react-icons/go';
+import { Formik } from 'formik';
 import { toast } from 'react-toastify';
+import {
+  Container,
+  SearchInput,
+  ButtonSearch,
+  SearchForm,
+} from './Searchbar.styled';
+//import { SearchInput, Field, Header, Button } from './Searchbar.styled';
 
-export class Searchbar extends React.Component {
-  state = {
-    search: '',
-  };
+/* const Input = styled(Field)`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  background-color: #fff;
+  border-radius: 3px;
+  overflow: hidden;
+`; */
 
-  handleNameChange = event => {
-    this.setState({ search: event.carrentTarget.value.toLoverCase() });
-  };
-
-  handleSubmit = event => {
-    event.preventDefault();
-
-    if (this.state.search.trim() === '') {
-      toast('Введите имя!');
+export const Searchbar = ({ onSubmit }) => {
+  const handleSubmit = ({ search }, actions) => {
+    if (search.trim() === '') {
+      toast('Введите название!');
       return;
     }
 
-    this.props.onSubmit(this.state.search);
-    this.setState({ search: '' });
+    onSubmit(search);
+    actions.resetForm();
+    // this.setState({ search: '' });
   };
 
-  render() {
-    return (
-      <>
-        <Formik
-          initialValues={{ title: '', link: '' }}
-          onSubmit={el => console.log(el)}
-        >
-          <Form>
-            <button type="submit">Search</button>
-            <label>
-              <Field name="title" />
-            </label>
-          </Form>
-        </Formik>
+  return (
+    <Container>
+      <Formik initialValues={{ search: '' }} onSubmit={handleSubmit}>
+        <SearchForm>
+          <ButtonSearch type="submit">
+            <GoSearch width="20" height="20" fill="grey" />
+          </ButtonSearch>
 
-        {/*  <form onSubmit={this.handleSubmit}>
-          <button type="submit">
-            <span>Search</span>
-          </button>
-
-          <input
-            type="text"
-            placeholder="Search images and photos"
-            name="search"
-            value={this.state.search}
-            onChange={this.handleNameChange}
-          />
-        </form> */}
-      </>
-    );
-  }
-}
+          <SearchInput name="search" />
+        </SearchForm>
+      </Formik>
+    </Container>
+  );
+};
+//<GoSearch width="20" height="20" fill="grey" />;
