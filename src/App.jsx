@@ -19,13 +19,11 @@ export class App extends React.Component {
     isLoading: false,
   };
 
-  //Если изменилось search или page мы можем делать HTTP запрос
-
   componentDidUpdate(_, prevState) {
     const { search, page } = this.state;
 
     if (prevState.page !== page || prevState.search !== search) {
-      this.setState({ isLoading: true }); // pixabay: null сбрасываем перед каждым http запросом
+      this.setState({ isLoading: true });
       searchPictures(search, page)
         .then(res => {
           console.log(res.hits);
@@ -37,9 +35,7 @@ export class App extends React.Component {
         .catch(error => this.setState({ error }));
     }
   }
-  //.then(pokemon => this.setState({pokemon, statrus:'resolved'}))
-  //.catch(error => this.setState({error, status: 'rejected'}))
-  //если сделаем +1 наш componentDidUpdate обновится снова, пойдет запрос на loadMore onClick={onClick}
+
   loadMore = () => {
     this.setState(prevState => ({
       page: prevState.page + 1,
@@ -47,10 +43,9 @@ export class App extends React.Component {
   };
 
   handleSubmit = event => {
-    // event.preventDefault();
     this.setState({
       page: 1,
-      search: event.target.elements.search.value, //берем знач.инпута
+      search: event.target.elements.search.value,
       pictures: [],
     });
     event.target.reset();
@@ -67,15 +62,18 @@ export class App extends React.Component {
   };
 
   handleSearchFormSubmit = search => {
-    this.setState({ search }); //доходит state с сабмита Searchbar
+    this.setState({ search });
   };
   render() {
-    // const { loading, pixabay, error } = this.state;
     const { pictures, isLoading, activeImage } = this.state;
     return (
       <AppContainer>
         <Searchbar onSubmit={this.handleSearchFormSubmit} />
-        <ImageGallery images={pictures} setActiveImage={this.setActiveImage} />
+        <ImageGallery
+          images={pictures}
+          setActiveImage={this.setActiveImage}
+          onClickImage={this.toggleModal}
+        />
         <ToastContainer autoClose={3000} />
         <Button onClick={this.loadMore} />
 
@@ -83,39 +81,7 @@ export class App extends React.Component {
         {this.state.showModal && (
           <Modal onClose={this.toggleModal} activeImage={activeImage} />
         )}
-        {/* if(status === 'idel'){
-          return <div>Введите название </div>
-        }
-      if(status === 'pending'){
-          return <div>Загружаем...</div>
-        }
-       if(status === 'rejected'){
-          return <h1>{ error.message}</h1>
-        }
-      if(status === 'resolved'){
-          return <p>{searchPictures(search, page)}</p>
-        <img src={image.webformatURL} alt={image.tags} />
-        } */}
-        {/* <>
-          {error && <h1> {error.message}</h1>}
-          {loading && <div>Загружаем...</div>}
-          {pixabay && <div>{pixabay.page}</div>}
-          {this.props.search && <div>Введите имя пакемона</div>}
-           Достучались к картинке 
-          <p>{pixabay.name}</p>
-          <img
-            //src={sprites.other['official-artwork'].front_default}
-            alt=""
-            width="300"
-          />
-        </> */}
       </AppContainer>
     );
   }
 }
-
-// 1 formik - при сабмите передается query в стейт App
-// 2 axios - try catch
-// 3 componentDidUpdat - делаем запрос на бекенд
-// 4 меняем state - результат запроса сеттим в this.state.pictures
-// 5 render Gallery - передаем в компонент GalleryImages массив из стейта

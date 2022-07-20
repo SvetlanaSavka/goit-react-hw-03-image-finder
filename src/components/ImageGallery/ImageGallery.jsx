@@ -1,7 +1,8 @@
+import PropTypes from 'prop-types';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { Container } from './ImageGallery.styled';
 
-export const ImageGallery = ({ images, setActiveImage }) => {
+export const ImageGallery = ({ images, setActiveImage, onClickImage }) => {
   return (
     <Container>
       {images.map(image => (
@@ -9,11 +10,17 @@ export const ImageGallery = ({ images, setActiveImage }) => {
           key={image.id}
           image={image}
           onClick={() => {
-            console.log('click');
             setActiveImage(image.largeImageURL);
+            onClickImage();
           }}
         />
       ))}
     </Container>
   );
+};
+
+ImageGallery.propTypes = {
+  images: PropTypes.string.isRequired,
+  setActiveImage: PropTypes.string.isRequired,
+  onClickImage: PropTypes.func.isRequired,
 };
