@@ -1,7 +1,7 @@
 import axios from 'axios';
+import { API_KEY, BASE_URL } from 'constans/constans';
 
-axios.defaults.baseURL = 'https://pixabay.com/api/';
-const API_KEY = '28204087-b7dfad2f8be6ececce180758b';
+axios.defaults.baseURL = BASE_URL;
 
 export const searchPictures = async (search, page) => {
   try {

@@ -6,7 +6,7 @@ import Button from 'components/Button/Button';
 import Modal from 'components/Modal/Modal';
 import { searchPictures } from 'servises/api';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
-import { AppContainer } from 'App.styled';
+import { Container } from 'components/Container/Container.styled';
 
 export class App extends React.Component {
   state = {
@@ -67,7 +67,7 @@ export class App extends React.Component {
   render() {
     const { pictures, isLoading, activeImage } = this.state;
     return (
-      <AppContainer>
+      <Container>
         <Searchbar onSubmit={this.handleSearchFormSubmit} />
         <ImageGallery
           images={pictures}
@@ -81,7 +81,7 @@ export class App extends React.Component {
         {this.state.showModal && (
           <Modal onClose={this.toggleModal} activeImage={activeImage} />
         )}
-      </AppContainer>
+      </Container>
     );
   }
 }
