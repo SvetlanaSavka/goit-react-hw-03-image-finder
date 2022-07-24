@@ -17,6 +17,7 @@ export class App extends React.Component {
     showModal: false,
     activeImage: null,
     isLoading: false,
+    totalPages: null,
   };
 
   componentDidUpdate(_, prevState) {
@@ -26,7 +27,7 @@ export class App extends React.Component {
       this.setState({ isLoading: true });
       searchPictures(search, page)
         .then(res => {
-          console.log(res.hits);
+          this.setState({ totalPages: Math.ceil(res.total / 12) });
           this.setState(prevState => ({
             pictures: [...prevState.pictures, ...res.hits],
           }));
@@ -65,7 +66,7 @@ export class App extends React.Component {
     this.setState({ search });
   };
   render() {
-    const { pictures, isLoading, activeImage } = this.state;
+    const { pictures, isLoading, activeImage, page, totalPages } = this.state;
     return (
       <Container>
         <Searchbar onSubmit={this.handleSearchFormSubmit} />
@@ -75,9 +76,13 @@ export class App extends React.Component {
           onClickImage={this.toggleModal}
         />
         <ToastContainer autoClose={3000} />
-        <Button onClick={this.loadMore} />
 
         {isLoading && <Loader />}
+
+        {pictures.length >= 12 && page < totalPages && (
+          <Button onClick={this.loadMore} />
+        )}
+
         {this.state.showModal && (
           <Modal onClose={this.toggleModal} activeImage={activeImage} />
         )}

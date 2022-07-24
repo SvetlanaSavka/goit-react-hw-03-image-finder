@@ -20,7 +20,7 @@ export const ImageGallery = ({ images, setActiveImage, onClickImage }) => {
 };
 
 ImageGallery.propTypes = {
-  images: PropTypes.string.isRequired,
-  setActiveImage: PropTypes.string.isRequired,
+  images: PropTypes.array.isRequired,
+  setActiveImage: PropTypes.func.isRequired,
   onClickImage: PropTypes.func.isRequired,
 };
